@@ -2,9 +2,9 @@ import { fileURLToPath } from "url";
 import path from "path";
 import fs from "fs/promises";
 
-const isExist = async (name) => {
+const isExist = async (path) => {
   try {
-    await fs.access(name);
+    await fs.access(path);
     return true;
   } catch {
     return false;
