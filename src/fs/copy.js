@@ -1,20 +1,28 @@
 import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
+
+export const isExist = async (name) => {
+  try {
+    await fs.access(name);
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 const copy = async () => {
-  try {
-    await fs.access("../fs/files");
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const sourceDirPath = path.resolve(__dirname, "files");
+  const distDirPath = path.resolve(__dirname, "files_copy");
 
-    try {
-      await fs.access("../fs/files_copy");
-      throw new Error("FS operation failed");
-    } catch (error) {
-      if (error.code === "ENOENT") {
-        await fs.cp("../fs/files", "../fs/files_copy", { recursive: true });
-      } else {
-        throw error;
-      }
-    }
-  } catch (error) {
+  const srcExist = await isExist(sourceDirPath);
+  const distExist = await isExist(distDirPath);
+
+  if (srcExist && !distExist) {
+    await fs.cp(sourceDirPath, distDirPath, { recursive: true });
+  } else {
     throw new Error("FS operation failed");
   }
 };
