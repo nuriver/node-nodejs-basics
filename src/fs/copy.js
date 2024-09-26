@@ -14,8 +14,8 @@ const isExist = async (path) => {
 const copy = async () => {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
-  const sourceDirPath = path.resolve(__dirname, "files");
-  const distDirPath = path.resolve(__dirname, "files_copy");
+  const sourceDirPath = path.join(__dirname, "files");
+  const distDirPath = path.join(__dirname, "files_copy");
 
   const srcExist = await isExist(sourceDirPath);
   const distExist = await isExist(distDirPath);
